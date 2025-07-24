@@ -4,8 +4,8 @@
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/"><img src="https://avatars.githubusercontent.com/gtend" width="100px"; alt=""/><br /><sub><b>PM/DE | ㅇㅇㅇ</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>FE | ㅇㅇㅇ</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/"><img src="https://avatars.githubusercontent.com/gtend" width="100px"; alt=""/><br /><sub><b>PM/DE | 유채민</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/jeonghyeonmin1"><img src="https://avatars.githubusercontent.com/jeonghyeonmin1" width="100px;" alt=""/><br /><sub><b>FE | 정현민</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>BE | ㅇㅇㅇ</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>BE | ㅇㅇㅇ</b></sub></a><br /></td>
   </tbody>
