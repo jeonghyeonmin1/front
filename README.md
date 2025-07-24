@@ -18,7 +18,7 @@ AI 기반 LLM(대형언어모델) 면접 서비스입니다. 사용자는 다양
 ![서비스 메인](public/main.png)
 - Home: 서비스 소개 및 면접 시작
 - SelectJob: 분야/직업 선택
-![](public/main.png)
+![](public/Interview-list.png)
 - Interview: 직업별 면접 진행, 답변 입력, 진행률 표시
 - Result/Profile: 내 정보, 인터뷰 내역, 피드백
 ![](public/Profile.png)
