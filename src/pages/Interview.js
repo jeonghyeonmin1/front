@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 const QUESTIONS = {
   developer: [
@@ -36,6 +37,7 @@ function Interview() {
   const [step, setStep] = useState(0);
   const [answer, setAnswer] = useState('');
   const [answers, setAnswers] = useState([]);
+  const { addInterview } = useContext(UserContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ function Interview() {
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
+      addInterview(job, [...answers, answer]);
       alert('면접이 완료되었습니다!');
       // 결과 페이지로 이동 등 추가 구현 가능
     }
