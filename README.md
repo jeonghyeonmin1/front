@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# LLM Interview Service
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### ✨ TEAM MEMBER
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/"><img src="https://avatars.githubusercontent.com/gtend" width="100px"; alt=""/><br /><sub><b>PM/DE | ㅇㅇㅇ</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>FE | ㅇㅇㅇ</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>BE | ㅇㅇㅇ</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/gtend"><img src="https://avatars.githubusercontent.com/gtend" width="100px;" alt=""/><br /><sub><b>BE | ㅇㅇㅇ</b></sub></a><br /></td>
+  </tbody>
+</table>
+<br>
+## 프로젝트 소개
+AI 기반 LLM(대형언어모델) 면접 서비스입니다. 사용자는 다양한 직업/전공을 선택해 실제 면접처럼 질문에 답변하고, 결과와 피드백을 확인할 수 있습니다. 카카오 로그인, 프로필 관리, 인터뷰 내역 저장 등 실제 서비스에 가까운 UX를 제공합니다.
 
-## Available Scripts
+## 서비스 화면
+![서비스 메인](public/llm-main-demo.png)
+- Home: 서비스 소개 및 면접 시작
+- SelectJob: 분야/직업 선택
+- Interview: 직업별 면접 진행, 답변 입력, 진행률 표시
+- Result/Profile: 내 정보, 인터뷰 내역, 피드백
+- Sign In/Sign Up: 카카오 로그인 및 회원가입
 
-In the project directory, you can run:
+## 기술 스택
+- React (CRA 기반)
+- React Router
+- Context API (전역 상태 관리)
+- Styled CSS (프리미엄 UI)
+- 카카오 로그인 연동 (SDK/REST API)
+- 기타: ESLint, Prettier
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> 본 프로젝트는 실제 LLM 기반 면접 서비스의 프론트엔드 MVP 예시입니다. 추가 기능 및 백엔드 연동은 확장 가능합니다.
