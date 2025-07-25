@@ -165,19 +165,86 @@ body {
 }
 
 .interview-container {
-  max-width: 600px;
+  width: 1000px;
+  height: 600px;
   margin: 4rem auto;
   background: #fff;
   padding: 2.5rem 2rem;
   border-radius: 2rem;
-  box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+  box-shadow: 0 8px 32px rgba(106, 108, 196, 0.12);
 }
-.interview-container h2 {
+/* .interview-container h2 {
   color: #6366f1;
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+} */
+
+.interview-container h2 {
+  position: absolute;
+  bottom: 15rem;   /* progress-bar(bottom:6rem) 위로 2rem 올라옴 */
+  left: 2rem;     /* container padding-left 과 맞춤 */
+  right: 2rem;    /* container padding-right 과 맞춤 */
+  margin: 0;
+  /* 필요하다면 높이(line-height)나 글자 크기 조정 추가 */
 }
+
+/* 배너 스타일 */
+.time-banner {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.webcam-container {
+  width: 1200px;
+  max-width: 700px;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+}
+.webcam-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.question-banner {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  padding: 1rem 1rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+  z-index: 1000;
+}
+
+.subtitle {
+  position: absolute;
+  bottom: 20%;
+  width: 90%;
+  height:10%;
+  text-align: center;
+  font-size: 1.2rem;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+
 .question-box {
   font-size: 1.13rem;
   margin-bottom: 1.5rem;
@@ -219,19 +286,47 @@ body {
   background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
   box-shadow: 0 4px 16px rgba(99,102,241,0.16);
 }
-.progress-bar {
+
+/* .progress-bar {
   width: 100%;
   height: 10px;
   background: #eee;
   border-radius: 5px;
   overflow: hidden;
   margin-top: 1.5rem;
-}
-.progress {
+} 
+
+
+
+ .progress {
   height: 100%;
   background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
   transition: width 0.3s;
+}  */
+
+
+.progress-bar {
+  position: absolute;
+  bottom: 6rem;        /* h2(bottom:5rem) 바로 아래 */
+  left: 2rem;          /* interview-container의 padding-left와 맞춤 */
+  right: 2rem;         /* interview-container의 padding-right와 맞춤 */
+  height: 10px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
 }
+
+/* progress.css */
+.progress {
+  height: 100%;
+  width: 0;            /* 초기 너비: 0 */
+  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+  transition: width 0.3s;
+}
+
+
+
+
 .navbar {
   width: 100%;
   min-width: 0;
