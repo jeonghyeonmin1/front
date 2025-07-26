@@ -10,7 +10,7 @@ function Header() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/" className="navbar-brand">LLM 면접 서비스</Link>
+        <Link to="/" className="navbar-brand">EchoView : AI 면접 서비스</Link>
       </div>
       <div className="navbar-right">
         <Link to="/signin" className="navbar-menu">Sign In</Link>
