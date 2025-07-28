@@ -1,73 +1,103 @@
+/* ===================================================================
+   Navbar 스타일
+   =================================================================== */
 .navbar {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  background: linear-gradient(90deg, #60a5fa 0%, #60a5fa 100%);
-  color: #fff;
+
+  position: fixed;
+  /* top: 1rem; */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 16px rgba(99,102,241,0.08);
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  padding: 0.8rem 1.5rem;
+
+  
+  /* --- 핵심 수정 사항: 초기 상태 (투명) --- */
+  background: transparent;
+  backdrop-filter: none;
+  border: 1px solid transparent; /* 레이아웃 깨짐 방지를 위해 투명한 border 유지 */
+  box-shadow: none;
+  
+  /* 부드러운 전환 효과를 위한 transition 추가 */
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
   overflow-x: auto;
 }
+
+/* --- 핵심 수정 사항: 스크롤 후 상태 --- */
+.navbar.scrolled {
+  background: rgba(249, 246, 246, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ===================================================================
+   Navbar 내부 요소 스타일
+   =================================================================== */
 .navbar-left {
   display: flex;
   align-items: center;
 }
+
 .navbar-brand {
-  color: #fff;
+  color: #060606;
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -1px;
   text-decoration: none;
   padding: 0.2rem 0.5rem;
+  white-space: nowrap;
 }
+
 .navbar-right {
   display: flex;
   gap: 0.7rem;
   flex-wrap: wrap;
 }
+
 .navbar-menu {
-  color: #fff;
-  font-weight: 600;
+  color: #333;
+  font-weight: 500;
   font-size: 1rem;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 1.2rem;
-  background: rgba(99,102,241,0.18);
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
-  box-shadow: 0 2px 8px rgba(99,102,241,0.08);
   border: none;
   cursor: pointer;
   display: inline-block;
   white-space: nowrap;
 }
+
 .navbar-menu:hover {
   background: #fff;
   color: #6366f1;
 }
 
-
+/* ===================================================================
+   프로필 Popover 관련 스타일 (기존 유지)
+   =================================================================== */
 .profile-wrapper {
   display: inline-block;
 }
 
-/* Profile 링크 */
 .profile-link {
   color: inherit;
   text-decoration: none;
 }
 
-/* Popover 박스 */
 .profile-popover {
   position: absolute;
-  top: 100%;             /* header 바로 아래 */
+  top: 100%;
   right: 0;
   margin-top: 0.5rem;
   background: #ffffff;
