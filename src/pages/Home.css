@@ -34,17 +34,19 @@ body, html {
 /* ===================================================================
    1) 동적 배경 (반응형 적용)
    =================================================================== */
-
-/* 1. 배경 컨테이너 */
-.background-container {
+   
+background-container {
   width: 100%;
   height: 100%;
-  position: fixed;
+  
+  /* ★★★ 이 부분이 핵심입니다 ★★★ */
+  position: fixed; /* 요소를 브라우저 창(뷰포트) 자체에 고정시킵니다. */
+  
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: -1; /* 다른 모든 콘텐츠보다 뒤에 있도록 z-index를 음수로 설정합니다. */
   background-image: linear-gradient(to bottom, rgba(227, 242, 253, 1), white);
-  overflow: hidden; /* 컨테이너 밖으로 나가는 블롭 숨김 */
+  overflow: hidden; 
 }
 
 /* 2. 중앙 격자무늬 */
@@ -73,15 +75,17 @@ body, html {
   filter: blur(110px); /* 10% 증가 */
 }
 
-/* vw 단위를 10%씩 증가 */
-.blob-c1 { width: 22vw; height: 22vw; background: rgba(59, 130, 246, 0.8); top: 43%; left: 23%; }
-.blob-c2 { width: 27.5vw; height: 16.5vw; background: rgba(139, 92, 246, 0.8); top: 58%; left: 25%;}
-.blob-c3 { width: 22vw; height: 19.8vw; background: rgba(34, 197, 94, 0.4); top: 78%; right: 25%;}
-.blob-c4 { width: 24.2vw; height: 19.8vw; background: rgba(239, 68, 68, 0.4); top: 78%; right: 25%;}
-.blob-c5 { width: 22vw; height: 16.5vw; background: rgba(245, 158, 11, 0.7); top: 73%; left: 26%; }
-.blob-c6 { width: 19.8vw; height: 16.5vw; background: rgba(253, 224, 71, 0.6); top: 83%; left: 27%;}
-.blob-c7 { width: 38.5vw; height: 22vw; background: rgba(17, 91, 219, 1); top: 43%; left: 35%;}
-.blob-c8 { width: 22vw; height: 27.5vw; background: rgba(28, 159, 216, 0.874); top: 43%; right: 25%;}
+
+.blob-c1 { width: 24.2vw; height: 24.2vw; background: rgba(59, 130, 246, 0.8); top: 43%; left: 23%; }
+.blob-c2 { width: 30.25vw; height: 18.15vw; background: rgba(139, 92, 246, 0.8); top: 58%; left: 25%;}
+.blob-c3 { width: 24.2vw; height: 21.78vw; background: rgba(34, 197, 94, 0.4); top: 78%; right: 25%;}
+.blob-c4 { width: 26.62vw; height: 21.78vw; background: rgba(239, 68, 68, 0.4); top: 78%; right: 25%;}
+.blob-c5 { width: 24.2vw; height: 18.15vw; background: rgba(245, 158, 11, 0.7); top: 73%; left: 26%;}
+.blob-c6 { width: 21.78vw; height: 18.15vw; background: rgba(253, 224, 71, 0.6); top: 83%; left: 27%;}
+.blob-c7 { width: 42.35vw; height: 24.2vw; background: rgba(17, 91, 219, 1); top: 43%; left: 35%;}
+.blob-c8 { width: 24.2vw; height: 30.25vw; background: rgba(28, 159, 216, 0.874); top: 43%; right: 25%;}
+
+
 
 /* 블롭 움직임을 위한 키프레임 (반응형) */
 @keyframes move {
@@ -146,8 +150,8 @@ body, html {
 
 .home-content-area {
   margin-top: 2.2rem; /* 10% 증가 */
-  width: 66%; /* 10% 증가 */
-  max-width: 880px; /* 10% 증가 */
+  width: 100%; /* 10% 증가 */
+  max-width: 1200px; /* 10% 증가 */
   perspective: 1100px; /* 10% 증가 */
 }
 
