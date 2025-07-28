@@ -146,8 +146,8 @@ body, html {
 
 .home-content-area {
   margin-top: 2.2rem; /* 10% 증가 */
-  width: 66%; /* 10% 증가 */
-  max-width: 880px; /* 10% 증가 */
+  width: 100%; /* 10% 증가 */
+  max-width: 1200px; /* 10% 증가 */
   perspective: 1100px; /* 10% 증가 */
 }
 

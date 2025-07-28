@@ -8,22 +8,26 @@ const tabData = [
   {
     id: 1,
     text: '면접 질문 - LLM 생성',
-    imgSrc: 'https://placehold.co/1200x750/3B82F6/FFFFFF?text=LLM+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8+%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%86%E1%85%AE%E1%86%AB+%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A5%E1%86%BC&font=noto-sans-kr',
+    // imgSrc: 'https://placehold.co/1200x750/3B82F6/FFFFFF?text=LLM+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8+%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%86%E1%85%AE%E1%86%AB+%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A5%E1%86%BC&font=noto-sans-kr',
+    imgSrc: 'about.png',
   },
   {
     id: 2,
     text: '모의 면접',
-    imgSrc: 'https://placehold.co/1200x750/10B981/FFFFFF?text=%E1%84%86%E1%85%A9%E1%84%8B%E1%85%B4+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
+    // imgSrc: 'https://placehold.co/1200x750/10B981/FFFFFF?text=%E1%84%86%E1%85%A9%E1%84%8B%E1%85%B4+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
+    imgSrc: 'home-bg.jpg',
   },
   {
     id: 3,
     text: '실전 면접',
-    imgSrc: 'https://placehold.co/1200x750/8B5CF6/FFFFFF?text=%E1%84%89%E1%85%B5%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%AB+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
+    // imgSrc: 'https://placehold.co/1200x750/8B5CF6/FFFFFF?text=%E1%84%89%E1%85%B5%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%AB+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
+    imgSrc: 'about.png',
   },
   {
     id: 4,
     text: '면접 내용 분석&피드백',
-    imgSrc: 'https://placehold.co/1200x750/F59E0B/FFFFFF?text=%E1%84%87%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%E1%86%A8+%26+%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%87%E1%85%A2%E1%86%A8&font=noto-sans-kr',
+    // imgSrc: 'https://placehold.co/1200x750/F59E0B/FFFFFF?text=%E1%84%87%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%E1%86%A8+%26+%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%87%E1%85%A2%E1%86%A8&font=noto-sans-kr',
+    imgSrc: 'home-bg.jpg',
   },
 ];
 
