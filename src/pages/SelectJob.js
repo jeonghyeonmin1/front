@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './SelectJob.css';
 
 const JOBS = [
   { id: 'developer', name: '개발자' },
