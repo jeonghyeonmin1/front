@@ -1,0 +1,209 @@
+/* Auth 페이지 공통 스타일 (SignIn, SignUp) */
+.auth-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+  text-align: center;
+}
+
+.auth-container h2 {
+  color: #6366f1;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.auth-input {
+  font-size: 1.08rem;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.12);
+}
+
+.auth-btn {
+  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+  box-shadow: 0 4px 16px rgba(99,102,241,0.16);
+}
+
+.auth-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 구분선 스타일 */
+.auth-divider {
+  position: relative;
+  margin: 2rem 0 1.5rem 0;
+  text-align: center;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.auth-divider span {
+  background: #fff;
+  padding: 0 1rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.kakao-btn {
+  background: #fee500;
+  color: #3c1e1e;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.kakao-btn:hover {
+  background: #ffe066;
+}
+
+/* 이메일 중복확인 관련 스타일 */
+.email-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.email-input-with-btn {
+  padding-right: 5rem !important; /* 버튼 공간 확보 */
+}
+
+.email-check-btn-inline {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+}
+
+.email-check-btn-inline:hover:not(:disabled) {
+  background: linear-gradient(90deg, #7c3aed 0%, #9333ea 100%);
+  transform: translateY(-50%) scale(1.02);
+  box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+}
+
+.email-check-btn-inline:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: translateY(-50%);
+}
+
+.email-check-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.email-check-container .auth-input {
+  flex: 1;
+}
+
+.email-check-btn, .auth-email-check-btn {
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.email-check-btn:hover:not(:disabled), 
+.auth-email-check-btn:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.email-check-btn:disabled, 
+.auth-email-check-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.email-status, .email-check-result {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  padding: 0.6rem;
+  border-radius: 0.8rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.email-status.available, .email-check-result.available {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.email-status.unavailable, .email-check-result.unavailable {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
