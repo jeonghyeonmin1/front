@@ -48,31 +48,8 @@ function SignIn() {
     }
   };
 
-  const handleKakaoLogin = async () => {
-    try {
-      const result = await kakaoLoginApi();
-
-      if (result.success) {
-        // 카카오 로그인 성공
-        const { username, email, token } = result.data;
-        
-        // 토큰을 localStorage에 저장
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userInfo', JSON.stringify({ username, email }));
-        
-        // Context에 사용자 정보 저장
-        signIn(email);
-        
-        alert(`카카오 로그인 성공! 환영합니다, ${username}님!`);
-        navigate('/');
-      } else {
-        // 카카오 로그인 실패
-        alert(result.message);
-      }
-    } catch (error) {
-      console.error('카카오 로그인 오류:', error);
-      alert(error.message || '카카오 로그인 중 문제가 발생했습니다.');
-    }
+  const handleKakaoLogin = () => {
+    kakaoLoginApi(); // 백엔드로 바로 리다이렉트
   };
 
   return (

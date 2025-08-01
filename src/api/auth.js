@@ -25,33 +25,18 @@ export const loginApi = async (email, password) => {
   }
 };
 
-// 카카오 로그인 API
-export const kakaoLoginApi = async () => {
-  const response = await apiPost('/kakao/login', {});
-
-  if (response.result === 'ok') {
-    return {
-      success: true,
-      data: {
-        username: response.data.username,
-        email: response.data.email,
-        token: response.data.token
-      }
-    };
-  } else {
-    return {
-      success: false,
-      message: '카카오 로그인에 실패했습니다.'
-    };
-  }
+// 카카오 로그인 API - 프록시를 통해 백엔드로 리다이렉트
+export const kakaoLoginApi = () => {
+  // setupProxy.js를 통해 /kakao/login 요청이 백엔드로 프록시됨
+  window.location.href = '/kakao/login';
 };
 
 // 회원가입 API
-export const signupApi = async (email, password, name) => {
+export const signupApi = async (email, password, username) => {
   const response = await apiPost('/api/auth/join', {
     email,
     password,
-    name
+    username
   });
 
   if (response.result === 'ok') {

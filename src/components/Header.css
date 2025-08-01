@@ -115,3 +115,45 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
+
+/* ===================================================================
+   사용자 정보 및 로그아웃 버튼 스타일 추가됨 <- 디자인 수정 필요
+   =================================================================== */
+.navbar-user {
+  color: #6366f1;
+  font-weight: 500;
+  margin-right: 1rem;
+  font-size: 0.9rem;
+}
+
+.navbar-logout-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.navbar-logout-btn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+/* 반응형을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+  .navbar-user {
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+  }
+  
+  .navbar-logout-btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
