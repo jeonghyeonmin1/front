@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
+
+
+
+
 // 각 탭의 데이터 (ID, 텍스트, 이미지 경로)를 정의합니다.
 // 나중에 imgSrc를 실제 이미지 파일의 경로로 교체하시면 됩니다.
 const tabData = [
