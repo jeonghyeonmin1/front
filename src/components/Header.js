@@ -9,6 +9,7 @@ function Header() {
   const profileRef = useRef();
   const navigate = useNavigate();
 
+  
   // 스크롤 상태를 관리하기 위한 state 추가
   const [isScrolled, setIsScrolled] = useState(false);
 

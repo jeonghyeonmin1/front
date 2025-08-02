@@ -1,9 +1,31 @@
-body {
+/* body {
   margin: 0;
   font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-  background: linear-gradient(135deg, #e0e7ff 0%, #f7f8fa 100%);
+  background-color: white;
   min-height: 100vh;
-}
+} */
+
+/* body {
+  margin: 0;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+  background: linear-gradient(135deg, #cdd8ff 0%, #fafafa 30%);
+  min-height: 100vh;
+  } */
+
+  /* body {
+    margin: 0;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    background: linear-gradient(to bottom, #cdf5ff 0%, #fafafa 30%);
+    min-height: 100vh;
+  }  */
+
+
+  body {
+    margin: 0;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    background: linear-gradient(to bottom, #c7eefc 0%, #f7f8fa 25%);
+    min-height: 100vh;
+    }
 
 .App {
   min-height: 100vh;
