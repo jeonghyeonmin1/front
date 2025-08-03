@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import './Header.css';
 
 function Header() {
-  const { user } = useContext(UserContext);
+  const { user, signOut } = useContext(UserContext);
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef();
+  const navigate = useNavigate();
 
+  
   // 스크롤 상태를 관리하기 위한 state 추가
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -31,6 +33,12 @@ function Header() {
     };
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때만 실행되도록 함
 
+  const handleLogout = () => {
+    signOut();
+    alert('로그아웃되었습니다.');
+    navigate('/');
+  };
+
   return (
     // isScrolled 상태에 따라 'scrolled' 클래스를 동적으로 추가
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
@@ -41,15 +49,30 @@ function Header() {
       </div>
 
       <div className="navbar-right">
-        <Link to="/signin" className="navbar-menu">
-          Sign In
-        </Link>
-        <Link to="/signup" className="navbar-menu">
-          Sign Up
-        </Link>
-        <Link to="/profile" className="navbar-menu">
-            Profile
-        </Link>
+        {user ? (
+          // 로그인된 상태
+          <>
+            <span className="navbar-user">
+              {user.name}님!
+            </span>
+            <Link to="/profile" className="navbar-menu">
+              Profile
+            </Link>
+            <button className="navbar-menu navbar-logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          // 로그인되지 않은 상태
+          <>
+            <Link to="/signin" className="navbar-menu">
+              Sign In
+            </Link>
+            <Link to="/signup" className="navbar-menu">
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

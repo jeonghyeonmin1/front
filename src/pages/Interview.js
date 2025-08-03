@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import './Interview.css';
 
 const QUESTIONS = {
   developer: [
