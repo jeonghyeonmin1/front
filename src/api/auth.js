@@ -114,3 +114,44 @@ export const getUserInfoApi = async () => {
     };
   }
 };
+
+// 면접 시작 API (JWT 필요)
+export const startInterviewApi = async (jobType) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return {
+      success: false,
+      message: '로그인이 필요합니다.'
+    };
+  }
+
+  try {
+    const response = await apiGet('/api/interview/start', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      // job 타입을 query parameter로 전달
+      params: { job: jobType }
+    });
+
+    if (response.result === 'ok') {
+      return {
+        success: true,
+        data: {
+          questionList: response.data.questionList
+        }
+      };
+    } else {
+      return {
+        success: false,
+        message: '면접 질문을 가져오는데 실패했습니다.'
+      };
+    }
+  } catch (error) {
+    console.error('면접 시작 API 오류:', error);
+    return {
+      success: false,
+      message: '면접 시작 중 오류가 발생했습니다.'
+    };
+  }
+};

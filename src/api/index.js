@@ -12,7 +12,13 @@ class ApiError extends Error {
 
 // 공통 fetch 함수
 export const apiRequest = async (endpoint, options = {}) => {
-  const url = `${API_BASE_URL}${endpoint}`;
+  let url = `${API_BASE_URL}${endpoint}`;
+  
+  // query parameters 처리
+  if (options.params) {
+    const searchParams = new URLSearchParams(options.params);
+    url += `?${searchParams.toString()}`;
+  }
   
   // 기본 헤더 설정
   const defaultHeaders = {
@@ -23,6 +29,9 @@ export const apiRequest = async (endpoint, options = {}) => {
     headers: { ...defaultHeaders, ...options.headers },
     ...options,
   };
+  
+  // params는 fetch config에서 제거
+  delete config.params;
 
   try {
     const response = await fetch(url, config);

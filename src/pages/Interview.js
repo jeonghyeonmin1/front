@@ -18,7 +18,6 @@ function Interview() {
   const location = useLocation();
   const navigate = useNavigate();
   const job = location.state?.job || 'developer';
-  const questions = QUESTIONS[job];
   const { addInterview } = useContext(UserContext);
 
   const [step, setStep] = useState(0);
@@ -31,6 +30,15 @@ function Interview() {
 
   const recognitionRef = useRef(null);
   const videoRef = useRef(null);
+
+  // API에서 받은 질문 목록을 우선 사용, 없으면 기본 질문 사용
+  const apiQuestions = location.state?.questions;
+  const questions = (apiQuestions && Array.isArray(apiQuestions)) ? 
+    apiQuestions.map(q => q.question) : 
+    QUESTIONS[job];
+    
+  console.log('API Questions:', apiQuestions); // 디버깅용
+  console.log('Final Questions:', questions); // 디버깅용
 
   // 1) SpeechRecognition 초기화
   useEffect(() => {
@@ -149,6 +157,21 @@ function Interview() {
           <div className="analyzing-spinner" />
           <div className="analyzing-text">면접 질문 분석 중...</div>
           <div className="analyzing-subtext">잠시만 기다려주세요.</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 질문이 없는 경우 처리
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="interview-container">
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <h2>질문을 불러올 수 없습니다</h2>
+          <p>다시 시도해주세요.</p>
+          <button onClick={() => navigate('/select-job')}>
+            직무 선택으로 돌아가기
+          </button>
         </div>
       </div>
     );
