@@ -126,7 +126,8 @@ function Interview() {
     recognitionRef.current?.stop();
     if (!buffer.trim()) {
       alert('답변이 인식되지 않았습니다.');
-      return;
+      handleVoiceSubmit('None');
+      // return;
     }
     handleVoiceSubmit(buffer);
   };
