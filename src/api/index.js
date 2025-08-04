@@ -53,8 +53,8 @@ export const apiRequest = async (endpoint, options = {}) => {
 };
 
 // GET 요청
-export const apiGet = (endpoint) => {
-  return apiRequest(endpoint, { method: 'GET' });
+export const apiGet = (endpoint, options = {}) => {
+  return apiRequest(endpoint, { method: 'GET', ...options });
 };
 
 // POST 요청

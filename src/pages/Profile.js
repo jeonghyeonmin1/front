@@ -1,6 +1,7 @@
 // src/components/Profile.js
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../UserContext';
+import { getUserInfoApi } from '../api/auth';
 // ① Interview.js에서 QUESTIONS를 export 했다면, 이렇게 import 해서 쓰세요.
 // import { QUESTIONS } from '../Interview';
 import './Profile.css'
@@ -35,16 +36,71 @@ const QUESTIONS = {
 };
 
 function Profile() {
-  const { user, interviews } = useContext(UserContext);
+  const { user, interviews, signIn } = useContext(UserContext);
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 컴포넌트 마운트 시 사용자 정보 조회
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      setLoading(true);
+      setError(null);
+      
+      const result = await getUserInfoApi();
+      
+      if (result.success) {
+        setProfileData(result.data);
+        // UserContext의 user 정보도 업데이트
+        if (!user || user.email !== result.data.email) {
+          signIn(result.data.email, result.data.username);
+        }
+      } else {
+        setError(result.message);
+        console.warn('사용자 정보 조회 실패:', result.message);
+      }
+      
+      setLoading(false);
+    };
+
+    fetchUserInfo();
+  }, [user, signIn]);
+
+  // 로딩 상태
+  if (loading) {
+    return (
+      <div className="profile-container">
+        <h2>내 프로필</h2>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          사용자 정보를 불러오는 중...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
       <h2>내 프로필</h2>
+      
+      {/* 에러 메시지 표시 */}
+      {error && (
+        <div style={{ 
+          background: '#fee', 
+          color: '#c33', 
+          padding: '1rem', 
+          borderRadius: '0.5rem', 
+          marginBottom: '1rem',
+          textAlign: 'center'
+        }}>
+          {error}
+        </div>
+      )}
+      
       <div className="profile-card">
         <div className="profile-avatar" />
         <div className="profile-info">
-          <div><strong>이름:</strong> {user?.name || '미등록'}</div>
-          <div><strong>이메일:</strong> {user?.email || '미등록'}</div>
+          <div><strong>이름:</strong> {profileData?.username || user?.name || '미등록'}</div>
+          <div><strong>이메일:</strong> {profileData?.email || user?.email || '미등록'}</div>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 // 인증 관련 API 함수들
-import { apiPost } from './index';
+import { apiPost, apiGet } from './index';
 
 // 로그인 API
 export const loginApi = async (email, password) => {
@@ -71,6 +71,46 @@ export const verifyEmailApi = async (email) => {
     return {
       success: false,
       message: '이메일 확인 중 오류가 발생했습니다.'
+    };
+  }
+};
+
+// 사용자 정보 조회 API (JWT 필요)
+export const getUserInfoApi = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return {
+      success: false,
+      message: '로그인이 필요합니다.'
+    };
+  }
+
+  try {
+    const response = await apiGet('/api/user/info', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.result === 'ok') {
+      return {
+        success: true,
+        data: {
+          username: response.data.username,
+          email: response.data.email
+        }
+      };
+    } else {
+      return {
+        success: false,
+        message: '사용자 정보 조회에 실패했습니다.'
+      };
+    }
+  } catch (error) {
+    console.error('사용자 정보 조회 오류:', error);
+    return {
+      success: false,
+      message: '사용자 정보 조회 중 오류가 발생했습니다.'
     };
   }
 };
