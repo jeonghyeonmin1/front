@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
-import { signupApi, verifyEmailApi } from '../api/auth';
+import { signupApi, verifyEmailApi } from '../api/authAPI';
 import './Auth.css';
 
 function SignUp() {

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
-import { loginApi, kakaoLoginApi } from '../api/auth';
+import { loginApi, kakaoLoginApi } from '../api/authAPI';
 import './Auth.css';
 
 function SignIn() {

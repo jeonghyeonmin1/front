@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { startInterviewApi } from '../api/auth';
+import { startInterviewApi } from '../api/InterviewAPI';
 import './SelectJob.css';
 
 const JOBS = [

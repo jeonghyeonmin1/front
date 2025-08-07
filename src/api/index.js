@@ -66,10 +66,21 @@ export const apiGet = (endpoint, options = {}) => {
   return apiRequest(endpoint, { method: 'GET', ...options });
 };
 
-// POST 요청
-export const apiPost = (endpoint, data) => {
+//POST 요청
+// export const apiPost = (endpoint, data) => {
+//   return apiRequest(endpoint, {
+//     method: 'POST',
+//     body: JSON.stringify(data),
+//   });
+// };
+
+export const apiPost = (endpoint, { headers = {}, ...data } = {}) => {
   return apiRequest(endpoint, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
     body: JSON.stringify(data),
   });
 };

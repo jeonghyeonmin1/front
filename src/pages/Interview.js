@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import { postAnswer } from '../api/InterviewAPI';
 import './Interview.css';
 
 const QUESTIONS = {
@@ -130,12 +131,29 @@ function Interview() {
   };
 
   // “다음 질문” 혹은 타이머 만료 시
-  const handleNext = () => {
+  const handleNext = async () => {
     recognitionRef.current?.stop();
+    const answerText = buffer.trim() || 'None';
+    const currentQuestion = questions[step];
+
+    // 1) API로 답변 전송
+    console.log('Submitting answer:', {
+      question: currentQuestion,
+      useranswer: answerText,
+      video: "", // 비디오 데이터는 나중에 처리
+      type: job
+    });
+    const res = await postAnswer(currentQuestion, answerText, "", job);
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
+
+    // 2) 기존 로직 그대로
     if (!buffer.trim()) {
       alert('답변이 인식되지 않았습니다.');
       handleVoiceSubmit('None');
-      // return;
+      return;
     }
     handleVoiceSubmit(buffer);
   };

@@ -1,7 +1,7 @@
 // src/components/Profile.js
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../UserContext';
-import { getUserInfoApi } from '../api/auth';
+import { getUserInfoApi } from '../api/authAPI';
 // ① Interview.js에서 QUESTIONS를 export 했다면, 이렇게 import 해서 쓰세요.
 // import { QUESTIONS } from '../Interview';
 import './Profile.css'
