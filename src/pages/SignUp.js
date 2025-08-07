@@ -71,7 +71,7 @@ function SignUp() {
         const { username, email: userEmail, token } = result.data;
         
         // 토큰을 localStorage에 저장
-        localStorage.setItem('authToken', token);
+        localStorage.setItem('token', token);
         localStorage.setItem('userInfo', JSON.stringify({ username, email: userEmail }));
         
         // Context에 사용자 정보 저장
