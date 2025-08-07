@@ -4,6 +4,7 @@ import InterviewBox from '../components/InterviewBox';
 import TypingMent from '../components/Typing';
 import ScoreChart from '../components/ScoreChart';
 import './Result.css';
+import '../components/AnalyzingOverlay.css';
 
 // API 실패 시 사용할 샘플 데이터
 const sampleData = {
@@ -40,6 +41,7 @@ function Result() {
   const [summary, setSummary] = useState('');
   const [video, setVideo] = useState('');
   const [loading, setLoading] = useState(true);
+  const [analysisComplete, setAnalysisComplete] = useState(false);
 
   useEffect(() => {
     getAnalysisInfoApi()
@@ -57,17 +59,37 @@ function Result() {
           setSummary(sampleData.summary || '');
           setVideo(sampleData.video || '');
         }
+        setAnalysisComplete(true);
       })
       .catch(error => {
         console.error('API 호출 중 오류:', error);
         setInterviewList(sampleData.InterviewList || []);
         setSummary(sampleData.summary || '');
         setVideo(sampleData.video || '');
-      })
-      .finally(() => setLoading(false));
+        setAnalysisComplete(true);
+      });
   }, []);
 
-  if (loading) return <div>결과를 불러오는 중입니다...</div>;
+  // 분석 완료 후 3초 뒤 로딩 해제
+  useEffect(() => {
+    if (!analysisComplete) return;
+    const id = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // 3초 뒤
+    return () => clearTimeout(id);
+  }, [analysisComplete]);
+
+  if (loading) {
+    return (
+      <div className="analyzing-overlay">
+        <div className="analyzing-card">
+          <div className="analyzing-spinner" />
+          <div className="analyzing-text">면접 결과를 분석 중...</div>
+          <div className="analyzing-subtext">잠시만 기다려주세요.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
 
