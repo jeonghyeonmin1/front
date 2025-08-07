@@ -1,0 +1,148 @@
+@import '../components/AnalyzingOverlay.css';
+
+.interview-container {
+  width: 1000px;
+  height: 600px;
+  margin: 4rem auto;
+  background: #fff;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(106, 108, 196, 0.12);
+  /* 선택 카드를 중앙 정렬하기 위해 flex 속성 추가 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.interview-container h2 {
+  position: absolute;
+  bottom: 15rem;   
+  left: 2rem;    
+  right: 2rem;    
+  margin: 0;
+}
+
+/* ... (기존의 다른 스타일들은 여기에 그대로 위치) ... */
+
+.webcam-container {
+  margin-top: -8rem;
+  max-width: 600px;
+  /* margin: 0 auto 1rem; */
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+}
+
+.webcam-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.subtitle {
+  position: absolute;
+  top: 68%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-height: 10vh;
+  overflow-y: auto;           
+  white-space: pre-wrap;  
+  word-break: break-word;  
+  text-align: center;
+  font-size: 1.0rem;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 6rem;        
+  left: 2rem;          
+  right: 2rem;        
+  height: 10px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0;            
+  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+  transition: width 0.3s;
+}
+
+/* ================================== */
+/* === 면접 화면 선택 UI 스타일 === */
+/* ================================== */
+
+.camera-select-card {
+  background-color: #f8f9fa;
+  padding: 2.5rem 3.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 480px;
+  width: 90%;
+  border: 1px solid #e9ecef;
+}
+
+.camera-select-card h2 {
+  position: static;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.camera-select-card p {
+  color: #555;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}
+
+.camera-select-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.camera-select-buttons button {
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 2rem;
+  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+}
+
+.camera-select-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(99,102,241,0.25);
+}
+
+/* ================================== */
+/* === 캐릭터 이미지 스타일 === */
+/* ================================== */
+
+.character-image {
+  width: 300px; 
+  height: 400px; 
+}
+
+.interview-container.selection-mode {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
-import { postAnswer } from '../api/InterviewAPI';
 import './Interview.css';
 
 const QUESTIONS = {
@@ -10,7 +9,6 @@ const QUESTIONS = {
     '최근에 사용한 기술 스택은 무엇인가요?',
     '문제 해결 경험을 말해주세요.'
   ],
-  // … 이하 생략 (기존 QUESTIONS 그대로) …
 };
 
 const TIME_LIMIT = 120; // 초
@@ -21,6 +19,7 @@ function Interview() {
   const job = location.state?.job || 'developer';
   const { addInterview } = useContext(UserContext);
 
+  const [cameraMode, setCameraMode] = useState('select');
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [listening, setListening] = useState(false);
@@ -28,20 +27,18 @@ function Interview() {
   const [buffer, setBuffer] = useState('');
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  
+  // 1. TTS 재생 상태를 추적하기 위한 상태 추가
+  const [isSpeaking, setIsSpeaking] = useState(false); 
 
   const recognitionRef = useRef(null);
   const videoRef = useRef(null);
 
-  // API에서 받은 질문 목록을 우선 사용, 없으면 기본 질문 사용
   const apiQuestions = location.state?.questions;
   const questions = (apiQuestions && Array.isArray(apiQuestions)) ? 
     apiQuestions.map(q => q.question) : 
     QUESTIONS[job];
     
-  console.log('API Questions:', apiQuestions); // 디버깅용
-  console.log('Final Questions:', questions); // 디버깅용
-
-  // 1) SpeechRecognition 초기화
   useEffect(() => {
     const TR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!TR) return;
@@ -64,59 +61,72 @@ function Interview() {
     recognitionRef.current = recog;
   }, []);
 
-  // 2) 질문 바뀔 때마다 초기화 → TTS
   useEffect(() => {
-    if (isAnalyzing) return;  // 분석중이면 건너뛰기
+    if (cameraMode === 'select' || isAnalyzing) return;
+    
     setSubtitle('');
     setBuffer('');
     setTimeLeft(TIME_LIMIT);
     recognitionRef.current?.abort();
     speakQuestion();
-  }, [step, isAnalyzing]);
+  }, [step, isAnalyzing, cameraMode]);
 
-  // 3) TTS 및 음성 인식 시작
+  // 2. TTS 재생 상태를 제어하도록 speakQuestion 함수 수정
   const speakQuestion = () => {
-    if (!('speechSynthesis' in window)) return;
+    if (!('speechSynthesis' in window) || !questions[step]) return;
+
     speechSynthesis.cancel();
-    const loadVoices = () => {
-      const voices = speechSynthesis.getVoices();
-      if (voices.length === 0) return setTimeout(loadVoices, 100);
-      const sel = voices.find(v => v.name === 'Yuna' && v.lang?.startsWith('ko'))
-                || voices.find(v => v.lang === 'ko-KR')
-                || voices[0];
-      const u = new SpeechSynthesisUtterance(questions[step]);
-      if (sel) { u.voice = sel; u.lang = sel.lang; }
-      else      { u.lang = 'ko-KR'; }
-      u.rate = 1; u.pitch = 1; u.volume = 1;
-      u.onend = () => {
+    setIsSpeaking(true); // TTS 시작 시 상태를 true로 설정
+
+    const utterance = new SpeechSynthesisUtterance(questions[step]);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    utterance.onend = () => {
+        setIsSpeaking(false); // TTS 종료 시 상태를 false로 설정
         try { recognitionRef.current.start(); }
-        catch (e) { console.warn(e); }
-      };
-      speechSynthesis.speak(u);
+        catch (e) { console.warn("음성 인식 시작 오류:", e); }
     };
-    loadVoices();
+
+    const setVoiceAndSpeak = () => {
+        const voices = speechSynthesis.getVoices();
+        const koreanVoice = voices.find(v => v.name === 'Yuna' && v.lang?.startsWith('ko'))
+                       || voices.find(v => v.lang === 'ko-KR');
+        
+        if (koreanVoice) {
+            utterance.voice = koreanVoice;
+        }
+        
+        speechSynthesis.speak(utterance);
+    };
+
+    if (speechSynthesis.getVoices().length > 0) {
+        setVoiceAndSpeak();
+    } else {
+        speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+    }
   };
 
-  // 4) 타이머
   useEffect(() => {
-    if (isAnalyzing || timeLeft <= 0) return;
+    if (cameraMode === 'select' || isAnalyzing || timeLeft <= 0) return;
     const id = setInterval(() => setTimeLeft(t => t - 1), 1000);
     return () => clearInterval(id);
-  }, [timeLeft, isAnalyzing]);
+  }, [timeLeft, isAnalyzing, cameraMode]);
 
-  // 5) 타임아웃 시 자동 다음
   useEffect(() => {
+    if (cameraMode === 'select') return;
     if (timeLeft === 0) handleNext();
-  }, [timeLeft]);
+  }, [timeLeft, cameraMode]);
 
-  // 6) 웹캠
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(s => videoRef.current && (videoRef.current.srcObject = s))
-      .catch(e => console.error('Webcam error:', e));
-  }, []);
+    if (cameraMode === 'user') {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(s => videoRef.current && (videoRef.current.srcObject = s))
+        .catch(e => console.error('Webcam error:', e));
+    }
+  }, [cameraMode]);
 
-  // 면접 완료 후 분석 시작 → addInterview, 분석화면 토글
   const handleVoiceSubmit = transcript => {
     setAnswers(prev => {
       const next = [...prev, transcript];
@@ -130,44 +140,24 @@ function Interview() {
     });
   };
 
-  // “다음 질문” 혹은 타이머 만료 시
-  const handleNext = async () => {
+  const handleNext = () => {
     recognitionRef.current?.stop();
-    const answerText = buffer.trim() || 'None';
-    const currentQuestion = questions[step];
-
-    // 1) API로 답변 전송
-    console.log('Submitting answer:', {
-      question: currentQuestion,
-      useranswer: answerText,
-      video: "", // 비디오 데이터는 나중에 처리
-      type: job
-    });
-    const res = await postAnswer(currentQuestion, answerText, "", job);
-    if (!res.success) {
-      alert(res.message);
-      return;
-    }
-
-    // 2) 기존 로직 그대로
     if (!buffer.trim()) {
       alert('답변이 인식되지 않았습니다.');
       handleVoiceSubmit('None');
-      return;
+    } else {
+      handleVoiceSubmit(buffer);
     }
-    handleVoiceSubmit(buffer);
   };
 
-  // 7) 분석중 화면에서 3초 뒤 홈으로 이동
   useEffect(() => {
     if (!isAnalyzing) return;
     const id = setTimeout(() => {
       navigate('/result', { replace: true });
-    }, 3000); // 3초 뒤
+    }, 3000);
     return () => clearTimeout(id);
   }, [isAnalyzing, navigate]);
 
-  
   if (isAnalyzing) {
     return (
       <div className="analyzing-overlay">
@@ -180,7 +170,21 @@ function Interview() {
     );
   }
 
-  // 질문이 없는 경우 처리
+  if (cameraMode === 'select') {
+    return (
+      <div className="interview-container selection-mode">
+        <div className="camera-select-card">
+          <h2>면접 화면 설정</h2>
+          <p>면접 중 보여질 화면을 선택해주세요.</p>
+          <div className="camera-select-buttons">
+            <button onClick={() => setCameraMode('user')}>내 얼굴 보기 (웹캠)</button>
+            <button onClick={() => setCameraMode('character')}>캐릭터 보기</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!questions || questions.length === 0) {
     return (
       <div className="interview-container">
@@ -194,13 +198,21 @@ function Interview() {
       </div>
     );
   }
-
-  // **면접 진행 화면**
+  
   const percent = ((step + 1) / questions.length) * 100;
   return (
     <div className="interview-container" style={{ position: 'relative', paddingBottom: '8rem' }}>
       <div className="webcam-container">
-        <video ref={videoRef} autoPlay muted playsInline className="webcam-video" />
+        {cameraMode === 'user' ? (
+          <video ref={videoRef} autoPlay muted playsInline className="webcam-video" />
+        ) : (
+          // 3. isSpeaking 상태에 따라 다른 이미지 소스를 전달
+          <img 
+            src={isSpeaking ? "/talking.png" : "/normal.png"} 
+            alt="Character" 
+            className="character-image" 
+          />
+        )}
       </div>
 
       <div className="subtitle">{subtitle}</div>
