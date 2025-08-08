@@ -1,5 +1,9 @@
 // 인증 관련 API 함수들
-import { apiPost, apiGet } from './index';
+// import { apiPost, apiGet } from './index';
+// ✅ 1. apiPostFormData 함수를 새로 import 합니다.
+import { apiPost, apiGet, apiPostFormData } from './index';
+
+
 
 // 사용자 정보 조회 API (JWT 필요)
 export const getUserInfoApi = async () => {
@@ -85,19 +89,30 @@ export const startInterviewApi = async (jobType) => {
 // Answer 전달 API (JWT 필요)
 // request = {"question": "string","answer": "string","video": "video","type": "string",}
 // response = {"result" : "ok","data" : {"message": "ok"}
-export const postAnswer = async (question, useranswer, video, type) => {
+export const postAnswer = async (question, useranswer, videoBlob, type) => {
   const token = localStorage.getItem('token');
   if (!token) {
     return { success: false, message: '로그인이 필요합니다.' };
   }
 
+  // FormData 객체 생성
+  const formData = new FormData();
+  formData.append('question', question);
+  formData.append('answer', useranswer); // API 명세에 맞춰 'answer' 키 사용
+  formData.append('type', type);
+
+  // 영상 파일(Blob)이 있을 경우에만 FormData에 추가
+  if (videoBlob && videoBlob.size > 0) {
+    formData.append('video', videoBlob, `interview_video_${Date.now()}.webm`);
+  }
+
   try {
-    const response = await apiPost('/api/interview/answer', {
-      headers: { Authorization: `Bearer ${token}` },
-      question,
-      useranswer,
-      video: video || '',
-      type,
+    // JSON용 apiPost 대신 FormData 전송용 apiPostFormData 함수를 사용
+    const response = await apiPostFormData('/api/interview/answer', formData, {
+      headers: { 
+        'Authorization': `Bearer ${token}`
+        // Content-Type은 여기서 설정하지 않습니다.
+      },
     });
 
     if (response.result === 'ok') {
