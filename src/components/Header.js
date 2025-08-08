@@ -13,7 +13,7 @@ function Header() {
   // 스크롤 상태를 관리하기 위한 state 추가
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // 스크롤 이벤트를 감지하는 useEffect 훅
+  // 스크롤 이벤트를 감지하는 useEffect 훅`
   useEffect(() => {
     // 스크롤 위치에 따라 isScrolled 상태를 업데이트하는 함수
     const handleScroll = () => {

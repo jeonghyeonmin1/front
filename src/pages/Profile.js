@@ -1,13 +1,13 @@
-// src/components/Profile.js
 import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import { getUserInfoApi } from '../api/authAPI';
-//import { getInterviewHistoryApi } from '../api/InterviewAPI';
 import { getGroupedInterviewHistoryApi } from '../api/InterviewAPI';
 import './Profile.css'
 
 function Profile() {
   const { user, signIn } = useContext(UserContext);
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [interviewHistory, setInterviewHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +56,15 @@ function Profile() {
 
     fetchData();
   }, [user, signIn]);
+
+  // 자세히보기 버튼 클릭 핸들러
+  const handleViewDetails = (sessionId) => {
+    navigate('/selectedresult', { 
+      state: { 
+        session_id: sessionId 
+      } 
+    });
+  };
 
   // 로딩 상태
   if (loading) {
@@ -139,24 +148,22 @@ function Profile() {
                   }}
                 >
                   {/* 세션 헤더 */}
-                  <div style={{ 
-                    marginBottom: '1rem', 
-                    paddingBottom: '0.5rem', 
-                    borderBottom: '2px solid #6366f1' 
-                  }}>
-                    <h4 style={{ 
-                      fontSize: '1rem', 
-                      color: '#6366f1', 
-                      margin: '0 0 0.5rem 0' 
-                    }}>
-                      📋 {session.type} 면접 (세션 #{sessionIdx + 1})
-                    </h4>
-                    <div style={{ fontSize: '0.8rem', color: '#666' }}>
-                      <span>📅 {new Date(session.created_at).toLocaleDateString('ko-KR')}</span>
-                      <span style={{ marginLeft: '1rem' }}>
-                        📝 총 {session.question_count}개 질문
-                      </span>
+                  <div className="session-header">
+                    <div className="session-info">
+                      <h4>
+                        📋 {session.type} 면접 (세션 #{sessionIdx + 1})
+                      </h4>
+                      <div className="session-details">
+                        <span>📅 {new Date(session.created_at).toLocaleDateString('ko-KR')}</span>
+                        <span>📝 총 {session.question_count}개 질문</span>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => handleViewDetails(session.session_id)}
+                      className="detail-view-btn"
+                    >
+                      📊 자세히보기
+                    </button>
                   </div>
 
                   {/* 세션의 인터뷰 목록 */}
