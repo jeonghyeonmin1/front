@@ -30,6 +30,10 @@ function Interview() {
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
+
   const recognitionRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -90,7 +94,13 @@ function Interview() {
       else      { u.lang = 'ko-KR'; }
       u.rate = 1; u.pitch = 1; u.volume = 1;
       u.onend = () => {
-        try { recognitionRef.current.start(); }
+        try { recognitionRef.current.start(); 
+              
+              //수정된 부분
+              //TTS 종료 후 영상 녹화 시작]
+              console.log("start Recording")
+              startRecording();
+        }
         catch (e) { console.warn(e); }
       };
       speechSynthesis.speak(u);
@@ -111,11 +121,68 @@ function Interview() {
   }, [timeLeft]);
 
   // 6) 웹캠
+  // useEffect(() => {
+  //   navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+  //     .then(s => videoRef.current && (videoRef.current.srcObject = s))
+  //     .catch(e => console.error('Webcam error:', e));
+  // }, []);
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(s => videoRef.current && (videoRef.current.srcObject = s))
-      .catch(e => console.error('Webcam error:', e));
+    async function setupWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); // 오디오도 포함
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+
+        // --- MediaRecorder 설정 ---
+        mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
+
+        mediaRecorderRef.current.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            recordedChunksRef.current.push(event.data);
+          }
+        };
+
+        mediaRecorderRef.current.onstart = () => {
+          setIsRecording(true);
+        };
+        
+        mediaRecorderRef.current.onstop = () => {
+          setIsRecording(false);
+        };
+
+      } catch (e) {
+        console.error('Webcam or MediaRecorder error:', e);
+      }
+    }
+    setupWebcam();
   }, []);
+
+  const startRecording = () => {
+    recordedChunksRef.current = []; // 이전 녹화 데이터 초기화
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'inactive') {
+      console.log("녹화 시작")
+      mediaRecorderRef.current.start();
+    }
+  };
+
+  // --- 녹화 중지 및 Blob 생성 함수 ---
+  const stopRecordingAndGetBlob = () => {
+    return new Promise((resolve) => {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.onstop = () => {
+          const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+          recordedChunksRef.current = []; // 청크 비우기
+          setIsRecording(false);
+          resolve(blob);
+        };
+        mediaRecorderRef.current.stop();
+      } else {
+        resolve(null); // 녹화 중이 아니면 null 반환
+      }
+    });
+  };
+
 
   // 면접 완료 후 분석 시작 → addInterview, 분석화면 토글
   const handleVoiceSubmit = transcript => {
@@ -131,33 +198,47 @@ function Interview() {
     });
   };
 
-  // “다음 질문” 혹은 타이머 만료 시
   const handleNext = async () => {
     recognitionRef.current?.stop();
+
+    // --- 녹화 중지 및 비디오 Blob 가져오기 ---
+    const videoBlob = await stopRecordingAndGetBlob(); // 추가
     const answerText = buffer.trim() || 'None';
     const currentQuestion = questions[step];
+    
+    // 추가
+    if (!videoBlob) {
+      console.warn("녹화된 비디오 데이터가 없습니다.");
+    }
 
     // 1) API로 답변 전송
     console.log('Submitting answer:', {
       question: currentQuestion,
       useranswer: answerText,
-      video: "", // 비디오 데이터는 나중에 처리
-      type: job,
-      session_id: sessionId
+      // 수정
+      video: videoBlob,
+      // video: "", // 비디오 데이터는 나중에 처리
+      type: job
     });
-    const res = await postAnswer(currentQuestion, answerText, "", job, sessionId);
-    if (!res.success) {
+
+
+    try{
+      const res = await postAnswer(currentQuestion, answerText, videoBlob, job, sessionId);
+      if (!res.success) {
       alert(res.message);
+
+      // 실패 시 다시 녹화를 시작할 수 있도록 처리
+      startRecording(); 
       return;
+    }
+    }catch (error){
+      alert('답변이 인식되지 않았습니다.');
+      console.error('Answer submission error:', error);
+      startRecording();
+        return;
     }
 
-    // 2) 기존 로직 그대로
-    if (!buffer.trim()) {
-      alert('답변이 인식되지 않았습니다.');
-      handleVoiceSubmit('None');
-      return;
-    }
-    handleVoiceSubmit(buffer);
+    handleVoiceSubmit(answerText);
   };
 
   // 7) 분석중 화면에서 3초 뒤 홈으로 이동

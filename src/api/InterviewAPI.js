@@ -1,5 +1,5 @@
 // 인증 관련 API 함수들
-import { apiPost, apiGet } from './index';
+import { apiGet, apiPostFormData } from './index';
 
 // 사용자 정보 조회 API (JWT 필요)
 export const getUserInfoApi = async () => {
@@ -86,28 +86,33 @@ export const startInterviewApi = async (jobType) => {
 // Answer 전달 API (JWT 필요)
 // request = {"question": "string","answer": "string","video": "video","type": "string","session_id": "string"}
 // response = {"result" : "ok","data" : {"message": "ok"}
-export const postAnswer = async (question, useranswer, video, type, sessionId = null) => {
+export const postAnswer = async (question, useranswer, videoBlob, type, sessionId = null) => {
   const token = localStorage.getItem('token');
   if (!token) {
+    console.error('postAnswer: 토큰이 없습니다.');
     return { success: false, message: '로그인이 필요합니다.' };
   }
 
+  const formData = new FormData();
+  formData.append('question', question);
+  formData.append('useranswer', useranswer);
+  formData.append('type', type);
+  
+  // 세션 ID가 있으면 추가
+  if (sessionId) {
+    formData.append('session_id', sessionId);
+  }
+  
+  if (videoBlob && videoBlob.size > 0) {
+    formData.append('video', videoBlob, `interview_video_${Date.now()}.webm`);
+  }
+
   try {
-    const requestData = {
-      question,
-      useranswer,
-      video: video || '',
-      type,
-    };
-
-    // 세션 ID가 있으면 추가
-    if (sessionId) {
-      requestData.session_id = sessionId;
-    }
-
-    const response = await apiPost('/api/interview/answer', {
-      headers: { Authorization: `Bearer ${token}` },
-      ...requestData
+    console.log("fromdata: ", formData.get('question'));
+    const response = await apiPostFormData('/api/interview/answer', formData, {
+      headers: { 
+        Authorization: `Bearer ${token}` 
+      }
     });
 
     if (response.result === 'ok') {

@@ -85,6 +85,48 @@ export const apiPost = (endpoint, { headers = {}, ...data } = {}) => {
   });
 };
 
+// FormData 전송을 위한 POST 요청
+export const apiPostFormData = async (endpoint, formData, options = {}) => {
+  let url = `${API_BASE_URL}${endpoint}`;
+  
+  // 기본 헤더에서 Content-Type을 제거해야 함
+  const defaultHeaders = {
+    // 'Content-Type'은 브라우저가 FormData를 위해 자동으로 설정하도록 비워둡니다.
+  };
+
+  const config = {
+    method: 'POST',
+    headers: { ...defaultHeaders, ...options.headers },
+    body: formData, // JSON.stringify를 사용하지 않고 FormData를 그대로 전달
+    ...options,
+  };
+  
+  try {
+    const response = await fetch(url, config);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new ApiError(
+        data.message || '파일 업로드 중 오류가 발생했습니다.',
+        response.status,
+        data
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    
+    throw new ApiError(
+      '서버와의 연결에 문제가 발생했습니다.',
+      0,
+      null
+    );
+  }
+};
+
 // PUT 요청
 export const apiPut = (endpoint, data) => {
   return apiRequest(endpoint, {
