@@ -108,7 +108,7 @@ export const postAnswer = async (question, useranswer, videoBlob, type, sessionI
   }
 
   try {
-    console.log("fromdata: ", formData.get('question'));
+    // console.log("fromdata: ", formData.get('question'));
     const response = await apiPostFormData('/api/interview/answer', formData, {
       headers: { 
         Authorization: `Bearer ${token}` 

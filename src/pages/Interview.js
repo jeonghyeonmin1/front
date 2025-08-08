@@ -43,8 +43,8 @@ function Interview() {
     apiQuestions.map(q => q.question) : 
     QUESTIONS[job];
     
-  console.log('API Questions:', apiQuestions); // 디버깅용
-  console.log('Final Questions:', questions); // 디버깅용
+  // console.log('API Questions:', apiQuestions); // 디버깅용
+  // console.log('Final Questions:', questions); // 디버깅용
 
   // 1) SpeechRecognition 초기화
   useEffect(() => {
