@@ -19,6 +19,7 @@ function Interview() {
   const location = useLocation();
   const navigate = useNavigate();
   const job = location.state?.job || 'developer';
+  const sessionId = location.state?.session_id || null;
   const { addInterview } = useContext(UserContext);
 
   const [step, setStep] = useState(0);
@@ -141,9 +142,10 @@ function Interview() {
       question: currentQuestion,
       useranswer: answerText,
       video: "", // 비디오 데이터는 나중에 처리
-      type: job
+      type: job,
+      session_id: sessionId
     });
-    const res = await postAnswer(currentQuestion, answerText, "", job);
+    const res = await postAnswer(currentQuestion, answerText, "", job, sessionId);
     if (!res.success) {
       alert(res.message);
       return;
@@ -162,10 +164,13 @@ function Interview() {
   useEffect(() => {
     if (!isAnalyzing) return;
     const id = setTimeout(() => {
-      navigate('/result', { replace: true });
+      navigate('/result', { 
+        state: { session_id: sessionId },
+        replace: true 
+      });
     }, 3000); // 3초 뒤
     return () => clearTimeout(id);
-  }, [isAnalyzing, navigate]);
+  }, [isAnalyzing, navigate, sessionId]);
 
   
   if (isAnalyzing) {

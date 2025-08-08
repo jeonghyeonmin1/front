@@ -2,7 +2,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../UserContext';
 import { getUserInfoApi } from '../api/authAPI';
-import { getInterviewHistoryApi } from '../api/InterviewAPI';
+//import { getInterviewHistoryApi } from '../api/InterviewAPI';
+import { getGroupedInterviewHistoryApi } from '../api/InterviewAPI';
 import './Profile.css'
 
 function Profile() {
@@ -35,11 +36,11 @@ function Profile() {
         }
 
         // 2) 인터뷰 내역 조회
-        const historyResult = await getInterviewHistoryApi();
+        const historyResult = await getGroupedInterviewHistoryApi();
         console.log('인터뷰 내역 조회 결과:', historyResult);
         
         if (historyResult.success) {
-          setInterviewHistory(historyResult.data.InterviewList || []);
+          setInterviewHistory(historyResult.data.sessions || []);
         } else {
           console.warn('인터뷰 내역 조회 실패:', historyResult.message);
           setInterviewHistory([]); // 실패 시 빈 배열
@@ -125,37 +126,88 @@ function Profile() {
               아직 인터뷰 내역이 없습니다.
             </div>
           ) : (
-            <ul style={{ paddingLeft: 0, maxHeight: '500px', overflowY: 'auto' }}>
-              {interviewHistory.map((iv, idx) => (
-                <li
-                  key={idx}
+            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+              {interviewHistory.map((session, sessionIdx) => (
+                <div
+                  key={session.session_id}
                   style={{
-                    marginBottom: '1.2rem',
+                    marginBottom: '2rem',
                     background: '#f8f9fa',
-                    borderRadius: '0.8rem',
-                    padding: '1rem',
-                    listStyle: 'none'
+                    borderRadius: '1rem',
+                    padding: '1.5rem',
+                    border: '1px solid #e9ecef'
                   }}
                 >
-                  <div style={{ fontSize: '0.9rem', color: '#6366f1', marginBottom: '0.3rem' }}>
-                    <strong>질문:</strong> {iv.question}
-                  </div>
-                  <div style={{ fontSize: '0.9rem', color: '#333', marginBottom: '0.5rem' }}>
-                    <strong>답변:</strong> {iv.useranswer}
-                  </div>
-                  {iv.analysis && (
-                    <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.5rem', padding: '0.5rem', background: '#fff', borderRadius: '0.5rem', border: '1px solid #e9ecef' }}>
-                      <strong>분석:</strong> {iv.analysis}
+                  {/* 세션 헤더 */}
+                  <div style={{ 
+                    marginBottom: '1rem', 
+                    paddingBottom: '0.5rem', 
+                    borderBottom: '2px solid #6366f1' 
+                  }}>
+                    <h4 style={{ 
+                      fontSize: '1rem', 
+                      color: '#6366f1', 
+                      margin: '0 0 0.5rem 0' 
+                    }}>
+                      📋 {session.type} 면접 (세션 #{sessionIdx + 1})
+                    </h4>
+                    <div style={{ fontSize: '0.8rem', color: '#666' }}>
+                      <span>📅 {new Date(session.created_at).toLocaleDateString('ko-KR')}</span>
+                      <span style={{ marginLeft: '1rem' }}>
+                        📝 총 {session.question_count}개 질문
+                      </span>
                     </div>
-                  )}
-                  {iv.score && (
-                    <div style={{ fontSize: '0.8rem', color: '#6366f1', marginTop: '0.5rem', textAlign: 'right' }}>
-                      <strong>점수:</strong> {iv.score}점
-                    </div>
-                  )}
-                </li>
+                  </div>
+
+                  {/* 세션의 인터뷰 목록 */}
+                  <div>
+                    {session.interviews.map((iv, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          marginBottom: '1rem',
+                          background: '#fff',
+                          borderRadius: '0.8rem',
+                          padding: '1rem',
+                          border: '1px solid #e9ecef'
+                        }}
+                      >
+                        <div style={{ fontSize: '0.9rem', color: '#6366f1', marginBottom: '0.5rem' }}>
+                          <strong>Q{iv.question_order + 1}:</strong> {iv.question}
+                        </div>
+                        <div style={{ fontSize: '0.9rem', color: '#333', marginBottom: '0.5rem' }}>
+                          <strong>답변:</strong> {iv.useranswer}
+                        </div>
+                        {iv.analysis && (
+                          <div style={{ 
+                            fontSize: '0.8rem', 
+                            color: '#666', 
+                            marginTop: '0.5rem', 
+                            padding: '0.5rem', 
+                            background: '#f8f9fa', 
+                            borderRadius: '0.5rem',
+                            borderLeft: '3px solid #6366f1'
+                          }}>
+                            <strong>💡 분석:</strong> {iv.analysis}
+                          </div>
+                        )}
+                        {iv.score && (
+                          <div style={{ 
+                            fontSize: '0.8rem', 
+                            color: '#6366f1', 
+                            marginTop: '0.5rem', 
+                            textAlign: 'right',
+                            fontWeight: 'bold'
+                          }}>
+                            📊 점수: {iv.score}점
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </div>

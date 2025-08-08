@@ -29,11 +29,13 @@ function SelectJob() {
       
       if (result.success) {
         console.log('질문 목록:', result.data.questionList); // 디버깅용
-        
+        console.log('세션 ID:', result.data.session_id); // 디버깅용
+
         // API에서 받은 질문 목록 저장
         setQuestionData({
           job: selected,
-          questions: result.data.questionList
+          questions: result.data.questionList,
+          session_id: result.data.session_id
         });
       } else {
         console.warn('API 실패, 기본 질문으로 진행:', result.message);

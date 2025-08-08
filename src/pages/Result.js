@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getAnalysisInfoApi } from '../api/InterviewAPI';
 import InterviewBox from '../components/InterviewBox';
 import TypingMent from '../components/Typing';
@@ -36,6 +37,8 @@ const sampleData = {
 };
 
 function Result() {
+  const location = useLocation();
+  const sessionId = location.state?.session_id || null;
   const username = JSON.parse(localStorage.getItem('userInfo') || '{}').username || '게스트';
   const [interviewList, setInterviewList] = useState([]);
   const [summary, setSummary] = useState('');
@@ -44,7 +47,7 @@ function Result() {
   const [analysisComplete, setAnalysisComplete] = useState(false);
 
   useEffect(() => {
-    getAnalysisInfoApi()
+    getAnalysisInfoApi(sessionId)
       .then(result => {
         if (result.success) {
           const data = result.data;
@@ -68,7 +71,7 @@ function Result() {
         setVideo(sampleData.video || '');
         setAnalysisComplete(true);
       });
-  }, []);
+  }, [sessionId]);
 
   // 분석 완료 후 3초 뒤 로딩 해제
   useEffect(() => {
