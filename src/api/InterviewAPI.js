@@ -155,3 +155,44 @@ export const getAnalysisInfoApi = async (jobType) => {
     };
   }
 };
+
+// 인터뷰 내역 get API (JWT 필요)
+export const getInterviewHistoryApi = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return {
+      success: false,
+      message: '로그인이 필요합니다.'
+    };
+  }
+
+  try {
+    const response = await apiGet('/api/interview/info', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.result === 'ok') {
+      return {
+        success: true,
+        data: {
+          InterviewList: response.data.InterviewList,
+          summary: response.data.summary,
+          video: response.data.video
+        }
+      };
+    } else {
+      return {
+        success: false,
+        message: '분석 내용을 가져오는데 실패했습니다.'
+      };
+    }
+  } catch (error) {
+    console.error('분석 API 오류:', error);
+    return {
+      success: false,
+      message: '분석 중 오류가 발생했습니다.'
+    };
+  }
+};
