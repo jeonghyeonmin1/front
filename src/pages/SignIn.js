@@ -32,6 +32,8 @@ function SignIn() {
         localStorage.setItem('username', username);
         localStorage.setItem('email', userEmail);
         
+        // localStorage.removeItem('authToken'); 
+        
         // Context에 사용자 정보 저장
         signIn(userEmail, username);
         

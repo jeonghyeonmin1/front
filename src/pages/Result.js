@@ -44,7 +44,8 @@ function Result() {
   const [analysisComplete, setAnalysisComplete] = useState(false);
 
   useEffect(() => {
-    getAnalysisInfoApi()
+    const jobType = localStorage.getItem('jobType') || 'developer';
+    getAnalysisInfoApi(jobType)
       .then(result => {
         if (result.success) {
           const data = result.data;
@@ -52,7 +53,13 @@ function Result() {
           
           setInterviewList(data.InterviewList || []); 
           setSummary(data.summary || '');
-          setVideo(data.video || '');
+          // setVideo(data.video || '');
+          console.log("setVideo Ok")
+          // setVideo(data.video || (data.InterviewList && data.InterviewList[0]?.video) || '');
+          const firstInterviewWithVideo = data.InterviewList?.find(item => item.video);
+          const videoUrl = firstInterviewWithVideo ? firstInterviewWithVideo.video : '';
+          setVideo(videoUrl);
+          
         } else {
           console.error('API 실패:', result.message);
           setInterviewList(sampleData.InterviewList || []);
@@ -96,9 +103,22 @@ function Result() {
     <div className="result-container">
       <div className="padd">
         <div className="vd">
-          <video controls width="100%">
-            <source src={`/videos/${video}`} type="video/mp4" />
+
+                    
+          <video controls width="100%" key={video}>
+            <source src={video} type="video/webm" />
+            영상이 지원되지 않는 브라우저입니다.
           </video>
+        
+        {/* <div className="vd">
+        {video && (
+          <video controls width="100%" key={video}>
+            <source src={video} type="video/webm" />
+            영상이 지원되지 않는 브라우저입니다.
+          </video>
+        )} */}
+
+          
 
           <ScoreChart
             scores={{

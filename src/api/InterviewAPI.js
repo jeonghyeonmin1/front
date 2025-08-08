@@ -131,6 +131,9 @@ export const postAnswer = async (question, useranswer, videoBlob, type) => {
 // 면접 분석 API (JWT 필요)
 export const getAnalysisInfoApi = async (jobType) => {
   const token = localStorage.getItem('token');
+  
+  console.log('API 요청 직전, 헤더에 포함될 토큰:', token);
+  
   if (!token) {
     return {
       success: false,
@@ -148,12 +151,20 @@ export const getAnalysisInfoApi = async (jobType) => {
     });
 
     if (response.result === 'ok') {
+      // return {
+      //   success: true,
+      //   data: {
+      //     InterviewList: response.data.InterviewList,
+      //     summary: response.data.summary,
+      //     video: response.data.video
+      //   }
+      // ✅ 서버가 보내주는 데이터 구조에 맞춰서 반환값을 수정합니다.
+      // response.data 객체에 있는 InterviewList와 summary를 그대로 전달합니다.
       return {
         success: true,
         data: {
           InterviewList: response.data.InterviewList,
           summary: response.data.summary,
-          video: response.data.video
         }
       };
     } else {
