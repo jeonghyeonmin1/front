@@ -43,19 +43,22 @@ function Header() {
     // isScrolled 상태에 따라 'scrolled' 클래스를 동적으로 추가
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-left">
-        <Link to="/" className="navbar-brand">
+        {/* <Link to="/" className="navbar-brand">
         <img 
       src="logo_img.png" 
       // alt="EchoView 로고" 
       className="navbar-logo" 
-    />
-    <img 
+    /> */}
+    {/* <img 
       src="logo_character.png" 
       // alt="EchoView 로고" 
       className="navbar-logo" 
-    />
-          {/* EchoView : AI 면접 서비스 */}
-        </Link>
+    /> */}
+        <div className="navbar-brand">
+          EchoView : AI 면접 서비스
+        </div>
+          
+        {/* </Link> */}
       </div>
 
       <div className="navbar-right">
