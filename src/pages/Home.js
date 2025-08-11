@@ -13,25 +13,25 @@ const tabData = [
     id: 1,
     text: '면접 질문 - LLM 생성',
     // imgSrc: 'https://placehold.co/1200x750/3B82F6/FFFFFF?text=LLM+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8+%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%86%E1%85%AE%E1%86%AB+%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A5%E1%86%BC&font=noto-sans-kr',
-    imgSrc: 'result.png',
+    imgSrc: 'question_gen.mov',
   },
   {
     id: 2,
-    text: '모의 면접',
+    text: '면접 화면',
     // imgSrc: 'https://placehold.co/1200x750/10B981/FFFFFF?text=%E1%84%86%E1%85%A9%E1%84%8B%E1%85%B4+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
-    imgSrc: 'result.png',
+    imgSrc: 'interview_example.mov',
   },
+  // {
+  //   id: 3,
+  //   text: '실전 면접',
+  //   // imgSrc: 'https://placehold.co/1200x750/8B5CF6/FFFFFF?text=%E1%84%89%E1%85%B5%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%AB+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
+  //   imgSrc: 'result.png',
+  // },
   {
     id: 3,
-    text: '실전 면접',
-    // imgSrc: 'https://placehold.co/1200x750/8B5CF6/FFFFFF?text=%E1%84%89%E1%85%B5%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%AB+%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%B8&font=noto-sans-kr',
-    imgSrc: 'result.png',
-  },
-  {
-    id: 4,
     text: '면접 내용 분석&피드백',
     // imgSrc: 'https://placehold.co/1200x750/F59E0B/FFFFFF?text=%E1%84%87%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%E1%86%A8+%26+%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%87%E1%85%A2%E1%86%A8&font=noto-sans-kr',
-    imgSrc: 'result.png',
+    imgSrc: 'interview_analysis.mov',
   },
 ];
 
@@ -85,11 +85,15 @@ function Home() {
 
         {/* 탭 선택에 따라 이미지를 표시하는 컨테이너 */}
         <div className="home-content-area">
-          <img
+          <video
             key={selectedTab.id} // key를 변경하여 이미지가 바뀔 때마다 애니메이션이 다시 실행되도록 함
             src={selectedTab.imgSrc}
             alt={`${selectedTab.text} 기능 시연 이미지`}
             className="tab-image"
+            autoPlay
+            muted
+            loop
+            playsInline
             onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/1200x750/CCCCCC/FFFFFF?text=Image+Not+Found'; }}
           />
         </div>

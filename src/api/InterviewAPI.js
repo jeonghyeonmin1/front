@@ -153,15 +153,6 @@ export const getAnalysisInfoApi = async (sessionId = null) => {
     });
 
     if (response.result === 'ok') {
-      // return {
-      //   success: true,
-      //   data: {
-      //     InterviewList: response.data.InterviewList,
-      //     summary: response.data.summary,
-      //     video: response.data.video,
-      //     session_id: response.data.session_id
-      //   }
-      // };
         return {
             success: true,
             data: {
