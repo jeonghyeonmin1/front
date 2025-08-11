@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-//import { getAnalysisInfoApi } from '../api/InterviewAPI';
 import { getInterviewHistoryApi } from '../api/InterviewAPI';
 import InterviewBox from '../components/InterviewBox';
 import TypingMent from '../components/Typing';
@@ -43,7 +42,8 @@ function Result() {
   const username = JSON.parse(localStorage.getItem('userInfo') || '{}').username || '게스트';
   const [interviewList, setInterviewList] = useState([]);
   const [summary, setSummary] = useState('');
-  const [video, setVideo] = useState('');
+  const [videos, setVideos] = useState([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [analysisComplete, setAnalysisComplete] = useState(false);
 
@@ -56,12 +56,17 @@ function Result() {
           
           setInterviewList(data.InterviewList || []); 
           setSummary(data.summary || '');
-          setVideo(data.video || '');
+          
+          // 모든 인터뷰 항목에서 비디오 URL 수집
+          const videoUrls = data.InterviewList?.filter(item => item.video).map(item => item.video) || [];
+          setVideos(videoUrls);
+          console.log("모든 비디오 설정 완료:", videoUrls);
+
         } else {
           console.error('API 실패:', result.message);
           setInterviewList(sampleData.InterviewList || []);
           setSummary(sampleData.summary || '');
-          setVideo(sampleData.video || '');
+          setVideos([sampleData.video || '']);
         }
         setAnalysisComplete(true);
       })
@@ -69,7 +74,7 @@ function Result() {
         console.error('API 호출 중 오류:', error);
         setInterviewList(sampleData.InterviewList || []);
         setSummary(sampleData.summary || '');
-        setVideo(sampleData.video || '');
+        setVideos([sampleData.video || '']);
         setAnalysisComplete(true);
       });
   }, [sessionId]);
@@ -82,12 +87,25 @@ function Result() {
     return () => clearTimeout(id);
   }, [analysisComplete]);
 
+  // 이전/다음 비디오 네비게이션 함수
+  const goToPreviousVideo = () => {
+    setCurrentVideoIndex(prev => Math.max(0, prev - 1));
+  };
+
+  const goToNextVideo = () => {
+    setCurrentVideoIndex(prev => Math.min(videos.length - 1, prev + 1));
+  };
+
+  const goToVideo = (index) => {
+    setCurrentVideoIndex(index);
+  };
+
   if (loading) {
     return (
       <div className="analyzing-overlay">
         <div className="analyzing-card">
           <div className="analyzing-spinner" />
-          <div className="analyzing-text">과거 면접 결과 로딩 중...</div>
+          <div className="analyzing-text">면접 결과를 분석 중...</div>
           <div className="analyzing-subtext">잠시만 기다려주세요.</div>
         </div>
       </div>
@@ -99,9 +117,173 @@ function Result() {
     <div className="result-container">
       <div className="padd">
         <div className="vd">
-          <video controls width="100%">
-            <source src={`/videos/${video}`} type="video/mp4" />
-          </video>
+          {/* 모든 비디오 표시 */}
+          {videos.length > 0 ? (
+            <div style={{ marginBottom: '2rem' }}>
+              <h3 style={{ 
+                marginBottom: '1.5rem', 
+                color: '#6366f1', 
+                fontSize: '1.2rem',
+                borderBottom: '2px solid #6366f1',
+                paddingBottom: '0.5rem',
+                textAlign: 'center'
+              }}>
+                📹 면접 영상 ({currentVideoIndex + 1}/{videos.length})
+              </h3>
+              
+              {/* 현재 비디오 표시 */}
+              <div style={{ 
+                background: '#f8f9fa',
+                padding: '0.5rem',
+                borderRadius: '0.6rem',
+                border: '1px solid #e9ecef',
+                textAlign: 'center'
+              }}>
+                <video 
+                  key={currentVideoIndex} // 비디오가 변경될 때 리렌더링을 위한 키
+                  controls 
+                  width="100%" 
+                  style={{ 
+                    borderRadius: '0.5rem',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    maxWidth: '1600px',
+                  }}
+                >
+                  <source src={videos[currentVideoIndex]} type="video/webm" />
+                  <source src={videos[currentVideoIndex]} type="video/mp4" />
+                  영상이 지원되지 않는 브라우저입니다.
+                </video>
+
+                {/* 네비게이션 버튼 */}
+                {videos.length > 1 && (
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    gap: '0.5rem',
+                    marginTop: '1rem',
+                    marginBottom: '0.5rem'
+                  }}>
+                    <button
+                      onClick={goToPreviousVideo}
+                      disabled={currentVideoIndex === 0}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.4rem',
+                        border: 'none',
+                        background: currentVideoIndex === 0 ? '#e0e0e0' : '#6366f1',
+                        color: currentVideoIndex === 0 ? '#999' : 'white',
+                        cursor: currentVideoIndex === 0 ? 'not-allowed' : 'pointer',
+                        fontSize: '0.85rem',
+                        fontWeight: '500',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseOver={(e) => {
+                        if (currentVideoIndex !== 0) {
+                          e.target.style.background = '#5048e5';
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        if (currentVideoIndex !== 0) {
+                          e.target.style.background = '#6366f1';
+                        }
+                      }}
+                    >
+                      ← 이전
+                    </button>
+
+                    <span style={{
+                      padding: '0.5rem 0.8rem',
+                      background: 'white',
+                      borderRadius: '0.4rem',
+                      color: '#6366f1',
+                      fontWeight: '600',
+                      border: '1px solid #6366f1',
+                      fontSize: '0.9rem'
+                    }}>
+                      {currentVideoIndex + 1} / {videos.length}
+                    </span>
+
+                    <button
+                      onClick={goToNextVideo}
+                      disabled={currentVideoIndex === videos.length - 1}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.4rem',
+                        border: 'none',
+                        background: currentVideoIndex === videos.length - 1 ? '#e0e0e0' : '#6366f1',
+                        color: currentVideoIndex === videos.length - 1 ? '#999' : 'white',
+                        cursor: currentVideoIndex === videos.length - 1 ? 'not-allowed' : 'pointer',
+                        fontSize: '0.85rem',
+                        fontWeight: '500',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseOver={(e) => {
+                        if (currentVideoIndex !== videos.length - 1) {
+                          e.target.style.background = '#5048e5';
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        if (currentVideoIndex !== videos.length - 1) {
+                          e.target.style.background = '#6366f1';
+                        }
+                      }}
+                    >
+                      다음 →
+                    </button>
+                  </div>
+                )}
+
+                {/* 비디오 인덱스 점(dots) */}
+                {videos.length > 1 && (
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    gap: '0.3rem' 
+                  }}>
+                    {videos.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToVideo(index)}
+                        style={{
+                          width: '10px',
+                          height: '10px',
+                          borderRadius: '50%',
+                          border: 'none',
+                          background: index === currentVideoIndex ? '#6366f1' : '#ddd',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
+                        }}
+                        title={`영상 ${index + 1}로 이동`}
+                        onMouseOver={(e) => {
+                          if (index !== currentVideoIndex) {
+                            e.target.style.background = '#bbb';
+                          }
+                        }}
+                        onMouseOut={(e) => {
+                          if (index !== currentVideoIndex) {
+                            e.target.style.background = '#ddd';
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '3rem 2rem', 
+              color: '#666',
+              background: '#f8f9fa',
+              borderRadius: '1rem',
+              marginBottom: '2rem'
+            }}>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📹</div>
+              <p style={{ fontSize: '1.1rem', margin: 0 }}>면접 영상이 없습니다.</p>
+            </div>
+          )}
 
           <ScoreChart
             scores={{

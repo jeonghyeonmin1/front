@@ -154,7 +154,16 @@ function Profile() {
                         📋 {session.type} 면접 (세션 #{sessionIdx + 1})
                       </h4>
                       <div className="session-details">
-                        <span>📅 {new Date(session.created_at).toLocaleDateString('ko-KR')}</span>
+                        <span>📅 {
+                          session.created_at 
+                            ? new Date(session.created_at).toLocaleDateString('ko-KR', {
+                                year: 'numeric',
+                                month: 'long', 
+                                day: 'numeric',
+                                timeZone: 'Asia/Seoul'
+                              })
+                            : '날짜 정보 없음'
+                        }</span>
                         <span>📝 총 {session.question_count}개 질문</span>
                       </div>
                     </div>
