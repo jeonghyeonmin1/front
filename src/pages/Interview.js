@@ -80,33 +80,90 @@ function Interview() {
   }, [step, isAnalyzing]);
 
   // 3) TTS 및 음성 인식 시작
-  const speakQuestion = () => {
-    if (!('speechSynthesis' in window)) return;
-    speechSynthesis.cancel();
+  // const speakQuestion = () => {
+  //   if (!('speechSynthesis' in window)) return;
+  //   speechSynthesis.cancel();
+  //   const loadVoices = () => {
+  //     const voices = speechSynthesis.getVoices();
+  //     if (voices.length === 0) return setTimeout(loadVoices, 100);
+  //     const sel = voices.find(v => v.name === 'Yuna' && v.lang?.startsWith('ko'))
+  //               || voices.find(v => v.lang === 'ko-KR')
+  //               || voices[0];
+  //     const u = new SpeechSynthesisUtterance(questions[step]);
+  //     if (sel) { u.voice = sel; u.lang = sel.lang; }
+  //     else      { u.lang = 'ko-KR'; }
+  //     u.rate = 1; u.pitch = 1; u.volume = 1;
+  //     u.onend = () => {
+  //       try {
+  //         recognitionRef.current.start();
+  //       }
+  //       catch (e) { console.warn(e); }
+  //     };
+  //     startRecording() 
+  //     speechSynthesis.speak(u);
+  //   };
+  //   loadVoices();
+  // };
+
+  // speakQuestion 함수를 async로 수정
+const speakQuestion = async () => {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+
+  // MediaRecorder가 준비될 때까지 기다리는 Promise 함수
+  const waitForRecorder = () => new Promise((resolve, reject) => {
+    const interval = setInterval(() => {
+      // mediaRecorderRef가 설정되었고, 상태가 'inactive'(대기 중)인지 확인
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'inactive') {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 100); // 0.1초마다 확인
+
+    // 10초 이상 준비 안 되면 에러 처리 (무한 루프 방지)
+    setTimeout(() => {
+      clearInterval(interval);
+      reject(new Error("녹화 장치를 준비하는 데 시간이 너무 오래 걸립니다."));
+    }, 10000);
+  });
+
+  try {
+    // 1. 녹화기가 준비될 때까지 기다립니다.
+    await waitForRecorder();
+
+    // 2. 녹화기 준비가 완료되면, 음성 로드 및 TTS 시작
     const loadVoices = () => {
       const voices = speechSynthesis.getVoices();
       if (voices.length === 0) return setTimeout(loadVoices, 100);
+      
       const sel = voices.find(v => v.name === 'Yuna' && v.lang?.startsWith('ko'))
                 || voices.find(v => v.lang === 'ko-KR')
                 || voices[0];
+                
       const u = new SpeechSynthesisUtterance(questions[step]);
       if (sel) { u.voice = sel; u.lang = sel.lang; }
       else      { u.lang = 'ko-KR'; }
       u.rate = 1; u.pitch = 1; u.volume = 1;
       u.onend = () => {
-        try { recognitionRef.current.start(); 
-              
-              //수정된 부분
-              //TTS 종료 후 영상 녹화 시작]
-              console.log("start Recording")
-              startRecording();
+        try {
+          recognitionRef.current.start();
         }
         catch (e) { console.warn(e); }
       };
+
+      // 3. 이제 안심하고 녹화를 시작합니다.
+      startRecording();
+      // 4. TTS를 시작합니다.
       speechSynthesis.speak(u);
     };
+
     loadVoices();
-  };
+
+  } catch (error) {
+    console.error(error);
+    alert("녹화 장치를 준비할 수 없습니다. 페이지를 새로고침하고 카메라 권한을 확인해주세요.");
+  }
+};
 
   // 4) 타이머
   useEffect(() => {

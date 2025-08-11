@@ -44,7 +44,17 @@ function Header() {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-left">
         <Link to="/" className="navbar-brand">
-          EchoView : AI 면접 서비스
+        <img 
+      src="logo_img.png" 
+      // alt="EchoView 로고" 
+      className="navbar-logo" 
+    />
+    <img 
+      src="logo_character.png" 
+      // alt="EchoView 로고" 
+      className="navbar-logo" 
+    />
+          {/* EchoView : AI 면접 서비스 */}
         </Link>
       </div>
 
