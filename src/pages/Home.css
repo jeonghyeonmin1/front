@@ -99,7 +99,7 @@ background-container {
 .home-title {
   margin-top:4rem;
   text-align: center;
-  margin-bottom: 5.5rem; /* 10% 증가 */
+  margin-bottom: 1.5rem; /* 10% 증가 */
 }
 .home-title h1 {
   color: #6785e8;

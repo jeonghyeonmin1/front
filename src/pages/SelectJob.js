@@ -4,9 +4,9 @@ import { startInterviewApi } from '../api/InterviewAPI';
 import './SelectJob.css';
 
 const JOBS = [
+  { id: 'nurse', name: '간호사' },
   { id: 'developer', name: '개발자' },
-  { id: 'designer', name: '디자이너' },
-  { id: 'marketer', name: '마케터' },
+  { id: 'doctor', name: '의사' },
   { id: 'planner', name: '기획자' },
   { id: 'etc', name: '기타' }
 ];

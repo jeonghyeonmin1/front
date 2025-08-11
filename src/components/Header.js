@@ -54,9 +54,9 @@ function Header() {
       // alt="EchoView 로고" 
       className="navbar-logo" 
     /> */}
-        <div className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           EchoView : AI 면접 서비스
-        </div>
+        </Link>
           
         {/* </Link> */}
       </div>
@@ -66,7 +66,7 @@ function Header() {
           // 로그인된 상태
           <>
             <span className="navbar-user">
-              {user.name}님!
+              {user.name}님
             </span>
             <Link to="/profile" className="navbar-menu">
               Profile
