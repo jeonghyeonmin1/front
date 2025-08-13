@@ -1,47 +1,6 @@
-// 인증 관련 API 함수들
 import { apiGet, apiPostFormData } from './index';
 
-// 사용자 정보 조회 API (JWT 필요)
-export const getUserInfoApi = async () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    return {
-      success: false,
-      message: '로그인이 필요합니다.'
-    };
-  }
-
-  try {
-    const response = await apiGet('/api/user/info', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (response.result === 'ok') {
-      return {
-        success: true,
-        data: {
-          username: response.data.username,
-          email: response.data.email
-        }
-      };
-    } else {
-      return {
-        success: false,
-        message: '사용자 정보 조회에 실패했습니다.'
-      };
-    }
-  } catch (error) {
-    console.error('사용자 정보 조회 오류:', error);
-    return {
-      success: false,
-      message: '사용자 정보 조회 중 오류가 발생했습니다.'
-    };
-  }
-};
-
-// 면접 시작 API (JWT 필요)
+// Interview API (JWT 필요)
 export const startInterviewApi = async (jobType) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -56,7 +15,6 @@ export const startInterviewApi = async (jobType) => {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      // job 타입을 query parameter로 전달
       params: { job: jobType }
     });
 
@@ -83,9 +41,7 @@ export const startInterviewApi = async (jobType) => {
   }
 };
 
-// Answer 전달 API (JWT 필요)
-// request = {"question": "string","answer": "string","video": "video","type": "string","session_id": "string"}
-// response = {"result" : "ok","data" : {"message": "ok"}
+// Answer API (JWT 필요)
 export const postAnswer = async (question, useranswer, videoBlob, type, sessionId = null) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -98,7 +54,6 @@ export const postAnswer = async (question, useranswer, videoBlob, type, sessionI
   formData.append('useranswer', useranswer);
   formData.append('type', type);
   
-  // 세션 ID가 있으면 추가
   if (sessionId) {
     formData.append('session_id', sessionId);
   }
@@ -108,7 +63,6 @@ export const postAnswer = async (question, useranswer, videoBlob, type, sessionI
   }
 
   try {
-    // console.log("fromdata: ", formData.get('question'));
     const response = await apiPostFormData('/api/interview/answer', formData, {
       headers: { 
         Authorization: `Bearer ${token}` 
@@ -128,7 +82,7 @@ export const postAnswer = async (question, useranswer, videoBlob, type, sessionI
 };
 
 
-// 면접 분석 API (JWT 필요)
+// Analysis API (JWT 필요)
 export const getAnalysisInfoApi = async (sessionId = null) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -148,7 +102,6 @@ export const getAnalysisInfoApi = async (sessionId = null) => {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      // session_id를 query parameter로 전달
       params: params
     });
 
@@ -177,7 +130,7 @@ export const getAnalysisInfoApi = async (sessionId = null) => {
   }
 };
 
-// 인터뷰 내역 get API (JWT 필요)
+// All Interview History API (JWT 필요)
 export const getGroupedInterviewHistoryApi = async () => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -216,50 +169,7 @@ export const getGroupedInterviewHistoryApi = async () => {
   }
 };
 
-
-
-// // 인터뷰 내역 get API (JWT 필요)
-// export const getInterviewHistoryApi = async () => {
-//   const token = localStorage.getItem('token');
-//   if (!token) {
-//     return {
-//       success: false,
-//       message: '로그인이 필요합니다.'
-//     };
-//   }
-
-//   try {
-//     const response = await apiGet('/api/interview/info', {
-//       headers: {
-//         'Authorization': `Bearer ${token}`
-//       }
-//     });
-
-//     if (response.result === 'ok') {
-//       return {
-//         success: true,
-//         data: {
-//           InterviewList: response.data.InterviewList,
-//           summary: response.data.summary,
-//           video: response.data.video
-//         }
-//       };
-//     } else {
-//       return {
-//         success: false,
-//         message: '분석 내용을 가져오는데 실패했습니다.'
-//       };
-//     }
-//   } catch (error) {
-//     console.error('분석 API 오류:', error);
-//     return {
-//       success: false,
-//       message: '분석 중 오류가 발생했습니다.'
-//     };
-//   }
-// };
-
-// 인터뷰 내역 get API (JWT 필요)
+// Interview History API (JWT 필요)
 export const getInterviewHistoryApi = async (sessionId = null) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -279,7 +189,6 @@ export const getInterviewHistoryApi = async (sessionId = null) => {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      // session_id를 query parameter로 전달
       params: params
     });
 

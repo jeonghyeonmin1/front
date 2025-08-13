@@ -1,13 +1,9 @@
-/* ===================================================================
-   Navbar 스타일
-   =================================================================== */
 .navbar {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
 
   position: fixed;
-  /* top: 1rem; */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -17,28 +13,21 @@
   align-items: center;
   padding: 0.8rem 1.5rem;
 
-  
-  /* --- 핵심 수정 사항: 초기 상태 (투명) --- */
   background: transparent;
   backdrop-filter: none;
-  border: 1px solid transparent; /* 레이아웃 깨짐 방지를 위해 투명한 border 유지 */
+  border: 1px solid transparent;
   box-shadow: none;
   
-  /* 부드러운 전환 효과를 위한 transition 추가 */
   transition: background 0.3s ease-in-out, border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   overflow-x: auto;
 }
 
 .navbar-logo {
-  /* height 값을 조절해 원하는 높이로 만드세요. */
-  height: 32px; /* 예시: 32픽셀 */
-  
-  /* width는 auto로 두어 가로세로 비율을 유지합니다. */
-  width: 32px; 
+  height: 82px;
+  width: 82px; 
 }
 
-/* --- 핵심 수정 사항: 스크롤 후 상태 --- */
 .navbar.scrolled {
   background: rgba(249, 246, 246, 0.6);
   backdrop-filter: blur(10px);
@@ -47,10 +36,6 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-
-/* ===================================================================
-   Navbar 내부 요소 스타일
-   =================================================================== */
 .navbar-left {
   display: flex;
   align-items: center;
@@ -64,7 +49,7 @@
   text-decoration: none;
   padding: 0.2rem 0.5rem;
   white-space: nowrap;
-  color: #6366f1; /* 기본 색상 */
+  color: #6366f1;
 }
 
 .navbar-right {
@@ -96,9 +81,6 @@
   color: #6366f1;
 }
 
-/* ===================================================================
-   프로필 Popover 관련 스타일 (기존 유지)
-   =================================================================== */
 .profile-wrapper {
   display: inline-block;
 }
@@ -128,12 +110,8 @@
   margin-bottom: 0.5rem;
 }
 
-/* ===================================================================
-   사용자 정보 및 로그아웃 버튼 스타일 추가됨 <- 디자인 수정 필요
-   =================================================================== */
 .navbar-user {
   color: #6366f1;
-  /* font-weight: 600; */
   margin-right: 1rem;
   font-size: 1rem;
   display: flex;
@@ -159,7 +137,6 @@
   color: white;
 }
 
-/* 반응형을 위한 미디어 쿼리 */
 @media (max-width: 768px) {
   .navbar-user {
     font-size: 0.8rem;

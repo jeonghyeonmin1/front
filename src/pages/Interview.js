@@ -10,7 +10,6 @@ const QUESTIONS = {
     '최근에 사용한 기술 스택은 무엇인가요?',
     '문제 해결 경험을 말해주세요.'
   ],
-  // … 이하 생략 (기존 QUESTIONS 그대로) …
 };
 
 const TIME_LIMIT = 120; // 초

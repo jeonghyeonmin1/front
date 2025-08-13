@@ -1,7 +1,6 @@
-// 인증 관련 API 함수들
 import { apiPost, apiGet } from './index';
 
-// 로그인 API
+// Login API
 export const loginApi = async (email, password) => {
   const response = await apiPost('/api/auth/login', {
     email,
@@ -25,13 +24,12 @@ export const loginApi = async (email, password) => {
   }
 };
 
-// 카카오 로그인 API - 프록시를 통해 백엔드로 리다이렉트
+// Kakao Login API
 export const kakaoLoginApi = () => {
-  // setupProxy.js를 통해 /kakao/login 요청이 백엔드로 프록시됨
   window.location.href = '/kakao/login';
 };
 
-// 회원가입 API
+// User join API
 export const signupApi = async (email, password, username) => {
   const response = await apiPost('/api/auth/join', {
     email,
@@ -56,7 +54,7 @@ export const signupApi = async (email, password, username) => {
   }
 };
 
-// 이메일 중복확인 API
+// Email Verify API
 export const verifyEmailApi = async (email) => {
   const response = await apiPost('/api/auth/verify', {
     email
@@ -75,7 +73,7 @@ export const verifyEmailApi = async (email) => {
   }
 };
 
-// 사용자 정보 조회 API (JWT 필요)
+// User info API (JWT 필요)
 export const getUserInfoApi = async () => {
   const token = localStorage.getItem('token');
   if (!token) {

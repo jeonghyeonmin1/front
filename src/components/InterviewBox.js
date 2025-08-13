@@ -3,9 +3,6 @@ import './InterviewBox.css';
 
 function InterviewBox({ item }) {
   const { question, useranswer, 'LLM gen answer': llmAnswer, analysis, score } = item;
-
-  // 분석결과 분리
-  // const analysisLines = analysis.split('\n');
   const analysisLines = (analysis || '').split('\n');
   const refinedAnswerLine = analysisLines.find(line => line.includes('수정된 답변')) || '';
   const refinedAnswer = refinedAnswerLine.replace('수정된 답변:', '').trim();

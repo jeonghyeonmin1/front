@@ -1,4 +1,3 @@
-// API 기본 설정 및 공통 함수들
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 class ApiError extends Error {
@@ -10,17 +9,17 @@ class ApiError extends Error {
   }
 }
 
-// 공통 fetch 함수
+// fetch
 export const apiRequest = async (endpoint, options = {}) => {
   let url = `${API_BASE_URL}${endpoint}`;
   
-  // query parameters 처리
+  // query parameters
   if (options.params) {
     const searchParams = new URLSearchParams(options.params);
     url += `?${searchParams.toString()}`;
   }
   
-  // 기본 헤더 설정
+  // Header
   const defaultHeaders = {
     'Content-Type': 'application/json',
   };
@@ -28,16 +27,15 @@ export const apiRequest = async (endpoint, options = {}) => {
   const config = {
     headers: { ...defaultHeaders, ...options.headers },
     ...options,
-  };
+  };  
   
-  // params는 fetch config에서 제거
+
   delete config.params;
 
   try {
     const response = await fetch(url, config);
     const data = await response.json();
 
-    // HTTP 상태 코드가 에러인 경우
     if (!response.ok) {
       throw new ApiError(
         data.message || '요청 처리 중 오류가 발생했습니다.',
@@ -52,7 +50,6 @@ export const apiRequest = async (endpoint, options = {}) => {
       throw error;
     }
     
-    // 네트워크 오류 등
     throw new ApiError(
       '서버와의 연결에 문제가 발생했습니다.',
       0,
@@ -61,7 +58,7 @@ export const apiRequest = async (endpoint, options = {}) => {
   }
 };
 
-// GET 요청
+// GET
 export const apiGet = (endpoint, options = {}) => {
   return apiRequest(endpoint, { method: 'GET', ...options });
 };
@@ -85,19 +82,17 @@ export const apiPost = (endpoint, { headers = {}, ...data } = {}) => {
   });
 };
 
-// FormData 전송을 위한 POST 요청
+// FormData POST
 export const apiPostFormData = async (endpoint, formData, options = {}) => {
   let url = `${API_BASE_URL}${endpoint}`;
   
-  // 기본 헤더에서 Content-Type을 제거해야 함
   const defaultHeaders = {
-    // 'Content-Type'은 브라우저가 FormData를 위해 자동으로 설정하도록 비워둡니다.
   };
 
   const config = {
     method: 'POST',
     headers: { ...defaultHeaders, ...options.headers },
-    body: formData, // JSON.stringify를 사용하지 않고 FormData를 그대로 전달
+    body: formData,
     ...options,
   };
   
@@ -127,7 +122,7 @@ export const apiPostFormData = async (endpoint, formData, options = {}) => {
   }
 };
 
-// PUT 요청
+// PUT
 export const apiPut = (endpoint, data) => {
   return apiRequest(endpoint, {
     method: 'PUT',
@@ -135,7 +130,7 @@ export const apiPut = (endpoint, data) => {
   });
 };
 
-// DELETE 요청
+// DELETE
 export const apiDelete = (endpoint) => {
   return apiRequest(endpoint, { method: 'DELETE' });
 };
